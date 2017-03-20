@@ -18,6 +18,7 @@ import java.util.concurrent.*;
  * Created by will on 20/03/17.
  *
  * TODO Fix the encapsulation issues.
+ * TODO Pass number of threads a config
  */
 public class MultiThreadedCrawler implements WebCrawler {
 

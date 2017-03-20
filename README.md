@@ -1,4 +1,4 @@
-# Simple Web Crawler
+# Multi Threaded Web Crawler
 
 ### Building
  
@@ -23,4 +23,5 @@
 * Will just ignore and log invalid URLs
 * Doesn't handle url fragments properly, so will crawl both www.example/test & www.example/test#fragment
 * Does not honour robots.txt disallows.
+* Spawns 8 threads.
   
