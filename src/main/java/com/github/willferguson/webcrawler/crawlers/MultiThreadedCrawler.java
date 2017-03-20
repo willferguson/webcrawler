@@ -19,16 +19,18 @@ import java.util.concurrent.*;
  *
  * TODO Fix the encapsulation issues.
  * TODO Pass number of threads a config
+ * TODO Shutdown the executor!
  */
 public class MultiThreadedCrawler implements WebCrawler {
 
     private Phaser phaser = new Phaser();
-    private ExecutorService executorService = Executors.newFixedThreadPool(8);
     private List<WebPage> pages = new ArrayList<>();
     private LinkManager linkManager;
+    private ExecutorService executorService;
 
-    public MultiThreadedCrawler(LinkManager linkManager) {
+    public MultiThreadedCrawler(LinkManager linkManager, ExecutorService executorService) {
         this.linkManager = linkManager;
+        this.executorService = executorService;
     }
 
     @Override
@@ -43,6 +45,7 @@ public class MultiThreadedCrawler implements WebCrawler {
         //Wait until all the tasks have completed
         phaser.arriveAndAwaitAdvance();
 
+        executorService.shutdown();
         return pages;
     }
     /*

@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Entry point to the application
@@ -23,6 +25,7 @@ public class Bootstrap {
     private static final Logger logger = LoggerFactory.getLogger(Bootstrap.class);
 
     public static void main(String[] args) throws IOException {
+        ExecutorService executorService = Executors.newFixedThreadPool(8);
 
         //logger.info("Starting WebCrawler with {}", args[0]);
         URL url = new URL("https://www.northplains.com");
@@ -31,11 +34,13 @@ public class Bootstrap {
         DomainLinkFilter domainLinkFilter = new DomainLinkFilter(url.getProtocol() + "://" + url.getHost());
         LinkManager linkManager = new LinkManager(domainLinkFilter);
 
-        WebCrawler webCrawler = new MultiThreadedCrawler(linkManager);
+        WebCrawler webCrawler = new MultiThreadedCrawler(linkManager, executorService);
 
         List<WebPage> crawledPages = webCrawler.crawlSite(url);
 
         logger.info("Crawling complete, formatting and printing...");
         new SimpleStdOutPrinter().print(crawledPages);
+
+        executorService.shutdown();
     }
 }
