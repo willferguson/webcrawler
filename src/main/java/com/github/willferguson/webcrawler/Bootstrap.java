@@ -27,8 +27,8 @@ public class Bootstrap {
     public static void main(String[] args) throws IOException {
         ExecutorService executorService = Executors.newFixedThreadPool(8);
 
-        //logger.info("Starting WebCrawler with {}", args[0]);
-        URL url = new URL("https://www.northplains.com");
+        logger.info("Starting WebCrawler with {}", args[0]);
+        URL url = new URL(args[0]);
 
         //Restrict the crawling to the single domain
         DomainLinkFilter domainLinkFilter = new DomainLinkFilter(url.getProtocol() + "://" + url.getHost());
