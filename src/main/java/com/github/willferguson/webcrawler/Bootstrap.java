@@ -1,5 +1,6 @@
 package com.github.willferguson.webcrawler;
 
+import com.github.willferguson.webcrawler.crawlers.MultiThreadedCrawler;
 import com.github.willferguson.webcrawler.crawlers.SimpleWebCrawler;
 import com.github.willferguson.webcrawler.crawlers.WebCrawler;
 import com.github.willferguson.webcrawler.links.LinkManager;
@@ -23,13 +24,14 @@ public class Bootstrap {
 
     public static void main(String[] args) throws IOException {
 
-        logger.info("Starting WebCrawler with {}", args[0]);
-        URL url = new URL(args[0]);
+        //logger.info("Starting WebCrawler with {}", args[0]);
+        URL url = new URL("https://www.northplains.com");
 
         //Restrict the crawling to the single domain
         DomainLinkFilter domainLinkFilter = new DomainLinkFilter(url.getProtocol() + "://" + url.getHost());
         LinkManager linkManager = new LinkManager(domainLinkFilter);
-        WebCrawler webCrawler = new SimpleWebCrawler(linkManager);
+
+        WebCrawler webCrawler = new MultiThreadedCrawler(linkManager);
 
         List<WebPage> crawledPages = webCrawler.crawlSite(url);
 
